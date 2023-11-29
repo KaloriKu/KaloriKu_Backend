@@ -18,5 +18,4 @@ def createDummy(request):
     if request.method == 'POST':
         dummy = Dummy.objects.create(name = request.POST.get('name'))
         dummy.save()    
-        return http.HttpResponse(serializers.serialize('json', dummy), 
-                                 content_type = 'application/json', status = 201)
+        return http.HttpResponse(dummy, content_type = 'application/json', status = 201)
