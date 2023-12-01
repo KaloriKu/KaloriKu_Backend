@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from authentication.dataclasses.user_registration_dto import UserRegistration
+from authentication.dataclasses.user_registration import UserRegistration
 from django.contrib.auth.models import User
 from authentication.models import RegisteredUser, Role
 from .serializers import UserRegistrationSerializer, RegisteredUserSerializer
