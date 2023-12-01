@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from authentication.dataclasses.user_registration import UserRegistration
 from django.contrib.auth.models import User
 from authentication.models import RegisteredUser, Role
@@ -28,6 +27,7 @@ class UserRegistrationAPIView(APIView):
                 
                 if data.role == 'Admin':
                     registered_user.role = Role.ADMIN
+                    registered_user.save()
                 
                 response = RegisteredUserSerializer(registered_user)
                 return Response(response.data, status = status.HTTP_201_CREATED)

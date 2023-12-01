@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'authentication',
     'dummy',
     'makanan',
+    'user_profile',
 ]
 
 MIDDLEWARE = [

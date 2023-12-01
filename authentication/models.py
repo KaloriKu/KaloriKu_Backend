@@ -15,4 +15,4 @@ class RegisteredUser(models.Model):
     role = models.CharField(choices=Role.choices, default=Role.REGISTERED_USER)
 
     def __str__(self):
-        return f"{self.email}/{self.nama} - {self.role}"
+        return f"{self.user.email}/{self.nama} - {self.role}"
