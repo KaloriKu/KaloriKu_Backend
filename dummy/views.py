@@ -1,21 +1,39 @@
-from django import http
-from django.shortcuts import render
+from commons.custom_permissions import IsAdmin
 from dummy.models import Dummy
-from django.views.decorators.csrf import csrf_exempt
-from django.core import serializers
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 # Create your views here.
-def dummy(request):
-    return http.HttpResponse("I'm Dummy", status = 200)
 
-def allDummies(request):
-    dummies = Dummy.objects.all()
-    return http.HttpResponse(serializers.serialize('json', dummies), 
-                             content_type = 'application/json', status = 200)
+class AllDummiesAPI(APIView):
+    permission_classes =  [AllowAny]
 
-@csrf_exempt
-def createDummy(request):
-    if request.method == 'POST':
+    def get(self, request):
+        dummies = Dummy.objects.all()
+        return Response(dummies, status = status.HTTP_200_OK)
+    
+class DummyAPI(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        return Response("I'm Dummy", status = status.HTTP_200_OK)
+    
+    def post(self, request):
         dummy = Dummy.objects.create(name = request.POST.get('name'))
-        dummy.save()    
-        return http.HttpResponse(dummy, content_type = 'application/json', status = 201)
+        return Response(dummy, status = status.HTTP_201_OK)
+    
+class ProtectedDummyAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response("I'm Protected Dummy", status = status.HTTP_200_OK)
+    
+    def post(self, request):
+        dummy = Dummy.objects.create(name = request.POST.get('name'))
+        return Response(dummy, status = status.HTTP_201_OK)
+    
+class AdminDummyAPI(APIView):
+    permission_classes = [IsAdmin]
+    def get(self, request):
+        return Response("I'm Admin Dummy", status = status.HTTP_200_OK)
