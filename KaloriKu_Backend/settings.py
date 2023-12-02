@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'artikel',
     'user_profile',
     'makanan_dikonsumsi',
+    'target',
 ]
 
 MIDDLEWARE = [
