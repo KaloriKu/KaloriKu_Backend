@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'authentication',
     'dummy',
     'makanan',
+    'artikel',
     'user_profile',
     'makanan_dikonsumsi',
 ]
