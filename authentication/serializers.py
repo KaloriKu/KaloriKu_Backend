@@ -1,15 +1,20 @@
 from rest_framework import serializers
 from authentication.models import RegisteredUser
 from django.contrib.auth.models import User
-from .models import Role
+from .models import ActivityLevel, Gender, Role
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserRegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
     nama = serializers.CharField()
+    umur = serializers.IntegerField(default = None)
+    gender = serializers.ChoiceField(choices=Gender.choices, default = None)
+    berat_badan = serializers.FloatField(default = None)
+    tinggi_badan = serializers.FloatField(default = None)
     role = serializers.ChoiceField(choices=Role.choices, default = Role.REGISTERED_USER)
-    
+    tingkat_aktivitas = serializers.ChoiceField(choices=ActivityLevel.choices,
+                                                default = ActivityLevel.LEVEL_1)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
