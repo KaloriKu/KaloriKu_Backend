@@ -34,9 +34,7 @@ class ProfileAPI(APIView):
                         user.email = serializer.validated_data.get('email', registered_user.user.get_username())
                     
                     registered_user.user = user
-                    registered_user.nama = serializer.validated_data.get('nama', registered_user.nama)
-                    registered_user.berat_badan = serializer.validated_data.get('berat_badan', registered_user.berat_badan)
-                    registered_user.tinggi_badan = serializer.validated_data.get('tinggi_badan', registered_user.tinggi_badan)
+                    update_external_profile(registered_user, serializer)
                     
                     user.save()
                     registered_user.save()
@@ -55,4 +53,10 @@ class AllRegisteredUserProfileAPI(APIView):
         serializer = RegisteredUserSerializer(registered_user, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
         
-        
+def update_external_profile(registered_user, serializer):
+    registered_user.nama = serializer.validated_data.get('nama', registered_user.nama)
+    registered_user.umur = serializer.validated_data.get('umur', registered_user.umur)
+    registered_user.gender = serializer.validated_data.get('gender', registered_user.gender)
+    registered_user.berat_badan = serializer.validated_data.get('berat_badan', registered_user.berat_badan)
+    registered_user.tinggi_badan = serializer.validated_data.get('tinggi_badan', registered_user.tinggi_badan)
+    registered_user.tingkat_aktivitas = serializer.validated_data.get('tingkat_aktivitas', registered_user.tingkat_aktivitas)
