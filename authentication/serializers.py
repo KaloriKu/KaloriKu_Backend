@@ -9,7 +9,8 @@ class UserRegistrationSerializer(serializers.Serializer):
     password = serializers.CharField()
     nama = serializers.CharField()
     role = serializers.ChoiceField(choices=Role.choices, default = Role.REGISTERED_USER)
-    
+    berat_badan = serializers.FloatField(default = None)
+    tinggi_badan = serializers.FloatField(default = None)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
