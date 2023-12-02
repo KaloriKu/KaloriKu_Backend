@@ -13,6 +13,8 @@ class RegisteredUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nama = models.CharField()
     role = models.CharField(choices=Role.choices, default=Role.REGISTERED_USER)
+    berat_badan = models.FloatField(default=None, null=True, blank=True)
+    tinggi_badan = models.FloatField(default=None, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.email}/{self.nama} - {self.role}"

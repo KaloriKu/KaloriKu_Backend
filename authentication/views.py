@@ -22,8 +22,12 @@ class UserRegistrationAPIView(APIView):
                                         email = data.email,
                                         password = data.password)
                 
-                registered_user = RegisteredUser.objects.create(user = user,
-                                                        nama = data.nama)
+                registered_user = RegisteredUser.objects.create(
+                                                        user = user,
+                                                        nama = data.nama,
+                                                        berat_badan = data.berat_badan,
+                                                        tinggi_badan = data.tinggi_badan
+                                                        )
                 
                 if data.role == 'Admin':
                     registered_user.role = Role.ADMIN

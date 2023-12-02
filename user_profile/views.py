@@ -35,6 +35,8 @@ class ProfileAPI(APIView):
                     
                     registered_user.user = user
                     registered_user.nama = serializer.validated_data.get('nama', registered_user.nama)
+                    registered_user.berat_badan = serializer.validated_data.get('berat_badan', registered_user.berat_badan)
+                    registered_user.tinggi_badan = serializer.validated_data.get('tinggi_badan', registered_user.tinggi_badan)
                     
                     user.save()
                     registered_user.save()

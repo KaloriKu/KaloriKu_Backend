@@ -6,4 +6,6 @@ class UserRegistration:
     nama: str
     password: str
     role: str
+    berat_badan: float = None
+    tinggi_badan: float = None
     
