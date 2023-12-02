@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'dummy',
     'makanan',
     'user_profile',
+    'makanan_dikonsumsi',
 ]
 
 MIDDLEWARE = [
