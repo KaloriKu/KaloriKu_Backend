@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/v1/makanan/', include('makanan.urls')),
     path('api/v1/authentication/', include('authentication.urls')),
     path('api/v1/profile/', include('user_profile.urls')),
+    path('api/v1/makanan-dikonsumsi/', include('makanan_dikonsumsi.urls')),
 ]
