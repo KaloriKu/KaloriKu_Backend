@@ -63,12 +63,30 @@ class EditTargetAPI(APIView):
                 return Response(f"Perhitungan kalori gagal", status=status.HTTP_400_BAD_REQUEST)
                 
             tujuan = request.POST.get('tujuan')
+            jangkaWaktu = request.POST.get("jangkaWaktu")
+            perubahanBeratBadan = request.POST.get('perubahanBeratBadan')
+            perubahanPerMinggu = int(perubahanBeratBadan) / int(jangkaWaktu)
+            
             if tujuan == "Menjaga berat badan":
+                perubahanBeratBadan = 0
                 targetKaloriHarian = kalori['data']['goals']['maintain weight']
+            
             elif tujuan == "Menaikkan berat badan":
-                targetKaloriHarian = kalori['data']['goals']['Weight gain']['calory']
+                if perubahanPerMinggu < 0.5:
+                    targetKaloriHarian = kalori['data']['goals']['Mild weight gain']['calory']
+                elif perubahanPerMinggu == 0.5:
+                    targetKaloriHarian = kalori['data']['goals']['Weight gain']['calory']
+                else:
+                    targetKaloriHarian = kalori['data']['goals']['Extreme weight gain']['calory']     
+            
             elif tujuan == "Menurunkan berat badan":
-                targetKaloriHarian = kalori['data']['goals']['Weight loss']['calory']
+                if perubahanPerMinggu < 0.5:
+                    targetKaloriHarian = kalori['data']['goals']['Mild weight loss']['calory']
+                elif perubahanPerMinggu == 0.5:
+                    targetKaloriHarian = kalori['data']['goals']['Weight loss']['calory']
+                else:
+                    targetKaloriHarian = kalori['data']['goals']['Extreme weight loss']['calory']  
+            
             else:
                 return Response(f"Masukkan tujuan yang valid!", status=status.HTTP_400_BAD_REQUEST)
             
@@ -77,6 +95,7 @@ class EditTargetAPI(APIView):
                 target = Target.objects.get(userId = request.user.id)
                 target.tujuan = tujuan
                 target.jangkaWaktu = request.POST.get("jangkaWaktu")
+                target.perubahanBeratBadan = perubahanBeratBadan
                 target.targetKaloriHarian = targetKaloriHarian
                 target.save()
                 
@@ -86,9 +105,10 @@ class EditTargetAPI(APIView):
                     userId=request.user.id,
                     tujuan=tujuan,
                     jangkaWaktu=request.POST.get("jangkaWaktu"),
+                    perubahanBeratBadan=perubahanBeratBadan,
                     targetKaloriHarian=targetKaloriHarian
                 )
                 new_target.save()
             return Response("Target berhasil disimpan", status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(f"Target tidak berhasil disimpan {e}", status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(f"Target tidak berhasil disimpan", status=status.HTTP_400_BAD_REQUEST)
