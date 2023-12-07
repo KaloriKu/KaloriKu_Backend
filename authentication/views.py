@@ -1,3 +1,4 @@
+import datetime
 from authentication.dataclasses.user_registration import UserRegistration
 from django.contrib.auth.models import User
 from authentication.models import RegisteredUser, Role
@@ -7,6 +8,13 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import IntegrityError, transaction
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
+from rest_framework_simplejwt.token_blacklist.models import \
+OutstandingToken, BlacklistedToken
+from datetime import datetime
+from pytz import timezone
 
 # Create your views here.
 class UserRegistrationAPIView(APIView):
@@ -41,3 +49,12 @@ class UserRegistrationAPIView(APIView):
         
         except IntegrityError:
             return Response("Credentials has been registered!", status = status.HTTP_409_CONFLICT)
+        
+
+class RefreshAPI(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        tz = timezone('Asia/Jakarta')
+        BlacklistedToken.objects.filter(token__expires_at__lt=datetime.now(tz=tz)).delete()
+        OutstandingToken.objects.filter(expires_at__lt=datetime.now(tz=tz)).delete()
+        response = super().post(request, *args, **kwargs)
+        return response
