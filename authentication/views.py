@@ -49,12 +49,3 @@ class UserRegistrationAPIView(APIView):
         
         except IntegrityError:
             return Response("Credentials has been registered!", status = status.HTTP_409_CONFLICT)
-        
-
-class RefreshAPI(TokenRefreshView):
-    def post(self, request, *args, **kwargs):
-        tz = timezone('Asia/Jakarta')
-        BlacklistedToken.objects.filter(token__expires_at__lt=datetime.now(tz=tz)).delete()
-        OutstandingToken.objects.filter(expires_at__lt=datetime.now(tz=tz)).delete()
-        response = super().post(request, *args, **kwargs)
-        return response
