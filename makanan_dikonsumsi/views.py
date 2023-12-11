@@ -71,6 +71,8 @@ class GetDaftarMakananDikonsumsi(APIView):
                 data['details'] = listDetailMakanan
 
                 list_data.append(data)
+
+                list_data.reverse()
             
 
             return JsonResponse({'data': list_data}, status=200)
