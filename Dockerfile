@@ -1,13 +1,9 @@
 # base image  
 FROM python:3.12-alpine
 # setup environment variable  
-ENV DockerHOME=/home/app/webapp  
-
-# set work directory  
-RUN mkdir -p $DockerHOME  
 
 # where your code lives  
-WORKDIR $DockerHOME  
+WORKDIR /usr/src/app
 
 ARG DB_HOST
 ARG DB_NAME
@@ -26,12 +22,11 @@ ENV SECRET_KEY ${SECRET_KEY}
 
 # install dependencies  
 RUN pip install --upgrade pip  
-
-# copy whole project to your docker home directory. 
-COPY . $DockerHOME  
-# run this command to install all dependencies  
+COPY ./requirements.txt /usr/src/app
 RUN pip install -r requirements.txt  
-# port where the Django app runs  
+
+COPY . /usr/src/app
+
 EXPOSE 8000  
 # start server  
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
