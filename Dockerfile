@@ -5,12 +5,12 @@ FROM python:3.12
 # where your code lives  
 WORKDIR /
 
-ARG DB_HOST=${DB_HOST}
-ARG DB_NAME=${DB_NAME}
-ARG DB_PASSWORD=${DB_PASSWORD}
-ARG DB_PORT=${DB_PORT}
-ARG DB_USER=${DB_USER}
-ARG SECRET_KEY=${SECRET_KEY}
+ARG DB_HOST
+ARG DB_NAME
+ARG DB_PASSWORD
+ARG DB_PORT
+ARG DB_USER
+ARG SECRET_KEY
 
 # set environment variables
 
@@ -30,10 +30,10 @@ RUN echo "SECRET_KEY=$SECRET_KEY" >> .env
 
 # install dependencies  
 RUN pip install --upgrade pip  
-COPY ./requirements.txt /usr/src/app
+COPY ./requirements.txt /
 RUN pip install -r requirements.txt  
 
-COPY . /usr/src/app
+COPY . /
 
 EXPOSE 8000  
 # start server  
