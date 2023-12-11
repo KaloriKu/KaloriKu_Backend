@@ -5,9 +5,9 @@ from .models import ActivityLevel, Gender, Role
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserRegistrationSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-    nama = serializers.CharField()
+    email = serializers.EmailField(default = None)
+    password = serializers.CharField(default = None)
+    nama = serializers.CharField(default = None)
     umur = serializers.IntegerField(default = None)
     gender = serializers.ChoiceField(choices=Gender.choices, default = None)
     berat_badan = serializers.FloatField(default = None)
