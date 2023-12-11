@@ -94,7 +94,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{secrets.GCLOUD_SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
       - name: SSH to google cloud
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{secrets.GCP_USERNAME}}@${{secrets.EXTERNAL_IP}} "
