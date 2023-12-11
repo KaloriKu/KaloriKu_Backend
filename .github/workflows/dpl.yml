@@ -42,7 +42,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run migration
-        run: python manage.py migrate
+        run: |
+        python manage.py migrate
+        python manage.py loaddata sample
         env:
           DB_HOST: ${{secrets.DB_HOST}}
           DB_NAME: ${{secrets.DB_NAME}}
