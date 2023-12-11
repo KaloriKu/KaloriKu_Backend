@@ -5,9 +5,12 @@ import json
 from django.http import HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
+from rest_framework.response import Response
 from commons.custom_permissions import IsAdmin
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
 
 # Create your views here.
 from artikel.models import Artikel
@@ -26,9 +29,10 @@ class GetDaftarArtikelAPI(APIView):
                     "tanggalDiunggah" : item.tanggalDiunggah,
         
                     })
-            return JsonResponse(data_artikel, safe=False)
+            daftar_artikel = {'allArtikel':data_artikel} 
+            return Response(daftar_artikel, content_type='application/json', status=status.HTTP_200_OK)
         except:
-            return http.HttpResponse("Gagal menampilkan artikel",status=400)
+            return Response("Gagal menampilkan artikel", status=status.HTTP_400_BAD_REQUEST)
 
 class AddArtikelAPI(APIView):
     permission_classes = [IsAdmin]
@@ -41,9 +45,9 @@ class AddArtikelAPI(APIView):
             new_article = Artikel( judulArtikel=judulArtikel, isiArtikel=isiArtikel,tanggalDiunggah=tanggalDiunggah)
             new_article.save()
         
-            return http.HttpResponse("Artikel berhasil disimpan", status=200)
+            return Response("Artikel berhasil disimpan", status=status.HTTP_200_OK)
         except:
-            return http.HttpResponse("Gagal menyimpan artikel", status=400)
+            return Response("Gagal menyimpan artikel", status=status.HTTP_400_BAD_REQUEST)
 
 class GetArtikelByIdAPI(APIView):
     permission_classes = [IsAuthenticated]
@@ -59,7 +63,7 @@ class GetArtikelByIdAPI(APIView):
                     "tanggalDiunggah" : artikel_by_id.tanggalDiunggah,
     
                     })
-            return JsonResponse(artikel, safe=False)
+            return Response(artikel, status=status.HTTP_200_OK)
         except:
-            return http.HttpResponse("Gagal menampilkan artikel",status=400)
+            return Response("Gagal menampilkan artikel",status=status.HTTP_400_BAD_REQUEST)
 
